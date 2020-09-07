@@ -1,0 +1,67 @@
+{
+  "name": "data-processor",
+  "version": "0.1.0",
+  "description": "a service that extracts main content from the web page, analyzes the content for adding additional metadata, and passes the final data to the indexing engine",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "start-dev": "pm2 start ecosystem.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src --fix",
+    "format": "prettier --write src",
+    "start-redis": "./redis/src/redis-server"
+  },
+  "keywords": [
+    "express",
+    "readabilityjs"
+  ],
+  "author": "Inho Han",
+  "license": "MIT",
+  "dependencies": {
+    "@mozilla/readability": "^0.3.0",
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
+    "bullmq": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsdom": "^16.4.0",
+    "method-override": "^3.0.0",
+    "moment-timezone": "^0.5.31",
+    "morgan": "^1.10.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.4.2",
+    "prettier": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2019
+    },
+    "plugins": [
+      "prettier"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "env": {
+      "node": true,
+      "jest": true
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 120,
+    "tabWidth": 2
+  }
+}
