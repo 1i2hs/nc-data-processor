@@ -1,11 +1,12 @@
 {
   "name": "data-processor",
   "version": "0.1.0",
-  "description": "a service that extracts main content from the web page, analyzes the content for adding additional metadata, and passes the final data to the indexing engine",
+  "description": "a service that extracts main content from the web page, analyzes the content to discover additional metadata, and passes the final data to the indexing engine",
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
-    "start-dev": "pm2 start ecosystem.config.js",
+    "start:dev": "pm2 start ecosystem.config.js",
+    "start:prod": "pm2 start ecosystem.prod.config.js --env production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src --fix",
     "format": "prettier --write src",

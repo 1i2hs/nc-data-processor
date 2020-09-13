@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { router } = require('../libs/bull-board/dist/index');
 
 const routes = require('../api');
 const config = require('../config');
@@ -38,6 +39,8 @@ module.exports = (app, bullQueues) => {
 
   // Middleware that transforms the raw string of req.body into json
   app.use(bodyParser.json());
+
+  app.use('/admin/queues', router);
 
   // Load API routes
   app.use(config.api.prefix, routes({ queues: bullQueues }));
