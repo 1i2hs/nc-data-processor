@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { router } = require('../libs/bull-board/dist/index');
+const { router } = require('../../external_modules/bull-board/dist/index');
 
 const routes = require('../api');
 const config = require('../config');

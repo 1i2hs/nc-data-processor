@@ -7,10 +7,11 @@
     "start": "node src/app.js",
     "start:dev": "pm2 start ecosystem.config.js",
     "start:prod": "pm2 start ecosystem.prod.config.js --env production",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint src --fix",
     "format": "prettier --write src",
-    "start-redis": "./redis/src/redis-server"
+    "start:redis": "./redis/src/redis-server",
+    "start:elasticsearch": "./elasticsearch/bin/elasticsearch"
   },
   "keywords": [
     "express",
@@ -30,7 +31,8 @@
     "method-override": "^3.0.0",
     "moment-timezone": "^0.5.31",
     "morgan": "^1.10.0",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
   },
   "devDependencies": {
     "eslint": "^7.8.1",
@@ -54,6 +56,7 @@
       "plugin:prettier/recommended"
     ],
     "env": {
+      "es6": true,
       "node": true,
       "jest": true
     }
@@ -64,5 +67,13 @@
     "singleQuote": true,
     "printWidth": 120,
     "tabWidth": 2
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "testPathIgnorePatterns": [
+      "/node_modules",
+      "src/lib"
+    ]
   }
 }

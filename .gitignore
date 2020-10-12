@@ -167,7 +167,8 @@ $RECYCLE.BIN/
 
 # etc
 redis
-libs
+elasticsearch
+external_modules
 dump.rdb
 
 # End of https://www.toptal.com/developers/gitignore/api/node,macos,windows

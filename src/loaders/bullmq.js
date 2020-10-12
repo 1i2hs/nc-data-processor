@@ -1,9 +1,11 @@
 const path = require('path');
 const { Queue, Worker } = require('bullmq');
-const { setQueues } = require('../libs/bull-board/dist/index');
+const { setQueues } = require('../../external_modules/bull-board/dist/index');
 
-const Logger = require('./logger');
+const { getLogger } = require('./logger');
 const { bullmq } = require('../config');
+
+const logger = getLogger('loaders.bullmq');
 
 module.exports = () => {
   const config = {
@@ -14,27 +16,27 @@ module.exports = () => {
   const analyzerQueue = new Queue('analyzer', config);
   const dispatcherQueue = new Queue('dispatcher', config);
 
-  const jobDir = path.resolve(__dirname, '../jobs');
-  const extractorWorker = new Worker('extractor', `${jobDir}/extractor.js`, config);
-  const analyzerWorker = new Worker('analyzer', `${jobDir}/analyzer.js`, config);
-  const dispatcherWorker = new Worker('dispatcher', `${jobDir}/dispatcher.js`, config);
+  const workerDir = path.resolve(__dirname, '../workers');
+  const extractorWorker = new Worker('extractor', `${workerDir}/extractor.js`, config);
+  const analyzerWorker = new Worker('analyzer', `${workerDir}/analyzer.js`, config);
+  const dispatcherWorker = new Worker('dispatcher', `${workerDir}/dispatcher.js`, config);
 
   extractorWorker.on('completed', (job) => {
     try {
-      Logger.info(`Job #${job.id} has completed!`);
+      logger.info(`Job #${job.id} has completed!`);
       console.dir(JSON.parse(job.returnvalue));
     } catch (error) {
-      Logger.error(error);
+      logger.error(error);
     }
   });
 
   extractorWorker.on('failed', (job, err) => {
-    Logger.info(`Job #${job.id} has failed with ${err.message}`);
+    logger.info(`Job #${job.id} has failed with ${err.message}`);
   });
 
   extractorWorker.on('error', (err) => {
     console.dir(err);
-    Logger.error(err);
+    logger.error(err);
   });
 
   // set queues for bull-board UI

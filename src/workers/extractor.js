@@ -2,7 +2,8 @@ const { Readability } = require('@mozilla/readability');
 const JSDOM = require('jsdom').JSDOM;
 const axios = require('axios').default;
 
-const Logger = require('../loaders/logger');
+const { getLogger } = require('../loaders/logger');
+const logger = getLogger('worker.extractors');
 
 module.exports = async function (job) {
   try {
@@ -12,7 +13,7 @@ module.exports = async function (job) {
       throw new Error(`Empty URL was given. Please provide a url.`);
     }
 
-    Logger.info(`Start extractor job #${job.id} with the url: ${url}`);
+    logger.info(`Start extractor job #${job.id} with the url: ${url}`);
 
     const { data } = await axios.get(url);
     const dom = new JSDOM(data, {
@@ -23,10 +24,10 @@ module.exports = async function (job) {
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
 
-    Logger.info(`Finished extractor job #${job.id}`);
+    logger.info(`Finished extractor job #${job.id}`);
     return Promise.resolve(JSON.stringify(article));
   } catch (error) {
-    Logger.error(error);
+    logger.error(error);
     return error;
   }
 };
