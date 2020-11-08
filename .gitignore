@@ -166,6 +166,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # etc
+pdfs
 redis
 elasticsearch
 external_modules

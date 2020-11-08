@@ -24,8 +24,15 @@ module.exports = async function (job) {
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
 
+    const { content, textContent } = article;
+    if (content === null || content === undefined || textContent === null || textContent === undefined) {
+      throw new Error(`The given URL '${url}' has an empty content. Please check whether it is valid or not.`);
+    }
+
+    const result = Object.assign(Object.create(null), article, { url });
+
     logger.info(`Finished extractor job #${job.id}`);
-    return Promise.resolve(JSON.stringify(article));
+    return JSON.stringify(result);
   } catch (error) {
     logger.error(error);
     return error;

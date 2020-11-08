@@ -26,6 +26,7 @@ module.exports = {
   logs: {
     level: process.env.LOG_LEVEL || 'silly',
   },
+
   /**
    * API configs
    */
@@ -42,5 +43,14 @@ module.exports = {
       host: process.env.REDIS_HOST,
       password: process.env.REDIS_PASSWORD,
     },
+  },
+
+  /**
+   * elasticsearch config
+   */
+  elasticsearch: {
+    host: process.env.ELASTICSEARCH_HOST,
+    port: process.env.ELASTICSEARCH_PORT,
+    defaultIndex: process.env.ELASTICSEARCH_DEFAULT_INDEX,
   },
 };

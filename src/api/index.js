@@ -6,7 +6,7 @@ module.exports = (dependencies = { queues: [] }) => {
   const app = Router();
 
   const { queues } = dependencies;
-  const [extractorQueue, analyzerQueue, dispatcherQueue] = queues;
+  const [extractorQueue] = queues;
 
   // initialize app with custom middlewares and routers here
   app.use('/extractor', ExtractorRouter(extractorQueue));
