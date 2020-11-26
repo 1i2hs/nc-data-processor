@@ -42,7 +42,7 @@ function getLogger(name) {
           format: 'YYYY-MM-DD HH:mm:ss',
         }),
         label({ label: name }),
-        json()
+        json(),
       ),
     });
 
