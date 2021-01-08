@@ -1,7 +1,7 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
 // Set the NODE_ENV to 'development' by default
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 const envFound = dotenv.config();
 if (envFound.error) {
@@ -10,6 +10,7 @@ if (envFound.error) {
 }
 
 module.exports = {
+  applicationName: process.env.APPLICATION_NAME,
   /**
    * Your favorite port
    */
@@ -24,14 +25,14 @@ module.exports = {
    * Used by winston logger
    */
   logs: {
-    level: process.env.LOG_LEVEL || 'silly',
+    level: process.env.LOG_LEVEL || "silly",
   },
 
   /**
    * API configs
    */
   api: {
-    prefix: '/api',
+    prefix: "/api",
   },
 
   /**

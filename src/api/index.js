@@ -1,15 +1,20 @@
-const { Router } = require('express');
-const ExtractorRouter = require('./routers/ExtractorRouter');
+const { Router } = require("express");
+
+const routers = require("./routers");
 
 // guaranteed to get dependencies
-module.exports = (dependencies = { queues: [] }) => {
+function createAPIRouter(dependencies = { queues: [] }) {
   const app = Router();
 
   const { queues } = dependencies;
   const [extractorQueue] = queues;
 
   // initialize app with custom middlewares and routers here
-  app.use('/extractor', ExtractorRouter(extractorQueue));
+  app.use("/extractor", routers.extractorRouter(extractorQueue));
 
   return app;
+}
+
+module.exports = {
+  createAPIRouter,
 };

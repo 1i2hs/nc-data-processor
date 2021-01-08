@@ -1,7 +1,7 @@
-const { getLogger } = require('../../loaders/logger');
-const logger = getLogger('api.controllers.ExtractorController');
+const logger = require("../../loader/logger");
+
 /**
- *
+ * creates a controller for extractor APIs
  * @param {import('bullmq').Queue} extractorQueue
  * @returns {{ postEnqueueJob: (req, res) => Promise.<void> }}
  */
@@ -12,9 +12,9 @@ function create(extractorQueue) {
 
     logger.info(`enqueued url: ${url}`);
     // await extractorQueue.add('extractor', { url }, { removeOnComplete: true, removeOnFail: true, attempts: 1 });
-    await extractorQueue.add('extractor', { url });
+    await extractorQueue.add("extractor", { url });
 
-    res.send({ message: 'Successfully queued the job' });
+    res.send({ message: "Successfully queued the job" });
   }
 
   return {

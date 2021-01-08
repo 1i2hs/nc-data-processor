@@ -1,22 +1,18 @@
-const express = require('express');
+const express = require("express");
 
-const { getLogger } = require('./loaders/logger');
-const config = require('./config');
+const loader = require("./loader");
+const { logger } = loader;
 
-const logger = getLogger('app');
+logger.info(`Initiating the application setup`);
 
-async function startServer() {
-  const app = express();
+const app = express();
 
-  await require('./loaders')(app);
+const { queues } = loader.loadBullMQ();
+logger.info(`Completed BullMQ setup`);
 
-  app.listen(config.port, (err) => {
-    if (err) {
-      logger.error(err);
-      process.exit(1);
-    }
-    logger.info(`Server listening on port: ${config.port}`);
-  });
-}
+loader.loadExpress(app, { bullQueues: queues });
+logger.info(`Completed Express setup`);
 
-startServer();
+logger.info(`Completed the application setup`);
+
+module.exports = app;

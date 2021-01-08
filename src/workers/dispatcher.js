@@ -1,10 +1,8 @@
-const axios = require('axios').default;
+const axios = require("axios").default;
 
-const { getLogger } = require('../loaders/logger');
-const { elasticsearch } = require('../config');
-const { validateArticle } = require('../libs/workerUtil');
-
-const logger = getLogger('worker.dispatcher');
+const { logger } = require("../loader");
+const { elasticsearch } = require("../config");
+const { validateArticle } = require("../libs/workerUtil");
 
 const ELASTICSEARCH_URL = `http://${elasticsearch.host}:${elasticsearch.port}`;
 
@@ -20,8 +18,12 @@ module.exports = async (job) => {
     // TODO: dispatch pdf file first
 
     const response = await axios.post(
-      `${ELASTICSEARCH_URL}/${index === null || index === undefined ? elasticsearch.defaultIndex : index}/_doc`,
-      article,
+      `${ELASTICSEARCH_URL}/${
+        index === null || index === undefined
+          ? elasticsearch.defaultIndex
+          : index
+      }/_doc`,
+      article
     );
 
     if (response.status >= 200 && response.status < 400) {
@@ -30,7 +32,7 @@ module.exports = async (job) => {
     }
 
     throw new Error(
-      `The dispatching task ended with the status code ${response.status} and the status text '${response.statusText}. Please investigate the root cause'. `,
+      `The dispatching task ended with the status code ${response.status} and the status text '${response.statusText}. Please investigate the root cause'. `
     );
   } catch (error) {
     logger.error(error);

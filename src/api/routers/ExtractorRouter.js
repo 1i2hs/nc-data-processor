@@ -1,15 +1,17 @@
-const { Router } = require('express');
+const { Router } = require("express");
+
+const extractController = require("../controllers/extractorController");
 
 /**
- *
+ * crates router for extractor APIs
  * @param {import('bullmq').Queue} extractorQueue
  * @returns {import('express').Router}
  */
 function create(extractorQueue) {
   const router = Router();
-  const extractController = require('../controllers/ExtractorController')(extractorQueue);
+  const controller = extractController(extractorQueue);
 
-  router.post('/jobs', extractController.postEnqueueJob);
+  router.post("/jobs", controller.postEnqueueJob);
 
   return router;
 }

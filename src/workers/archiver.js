@@ -1,11 +1,9 @@
-const fsp = require('fs').promises;
-const puppeteer = require('puppeteer');
+const fsp = require("fs").promises;
+const puppeteer = require("puppeteer");
 
-const { getLogger } = require('../loaders/logger');
-const { elasticsearch } = require('../config');
-const { validateArticle } = require('../libs/workerUtil');
-
-const logger = getLogger('worker.archiever');
+const { logger } = require("../loader");
+const { elasticsearch } = require("../config");
+const { validateArticle } = require("../libs/workerUtil");
 
 // PDF archieving process
 module.exports = async (job) => {
@@ -19,10 +17,13 @@ module.exports = async (job) => {
       throw new Error(`Empty URL was given. Please provide a url.`);
     }
 
-    logger.info(`Start archiever job #${job.id}`);
+    logger.info(`Start archiver job #${job.id}`);
 
     const fileName = Date.now();
-    const folderName = index === null || index === undefined ? elasticsearch.defaultIndex : index;
+    const folderName =
+      index === null || index === undefined
+        ? elasticsearch.defaultIndex
+        : index;
     const dir = `./pdfs/${folderName}`;
 
     try {
@@ -37,16 +38,16 @@ module.exports = async (job) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.goto(url, { waitUntil: 'networkidle2' });
+    await page.goto(url, { waitUntil: "networkidle2" });
     await page.pdf({
       path: filePath,
-      format: 'A4',
+      format: "A4",
     });
     await browser.close();
 
-    const result = Object.assign(article, { archievedFilePath: filePath });
+    const result = Object.assign(article, { archivedFilePath: filePath });
 
-    logger.info(`Finished archiever job #${job.id}`);
+    logger.info(`Finished archiver job #${job.id}`);
     return JSON.stringify(result);
   } catch (error) {
     logger.error(error);

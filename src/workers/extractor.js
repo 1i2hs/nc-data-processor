@@ -1,9 +1,8 @@
-const { Readability } = require('@mozilla/readability');
-const JSDOM = require('jsdom').JSDOM;
-const axios = require('axios').default;
+const { Readability } = require("@mozilla/readability");
+const JSDOM = require("jsdom").JSDOM;
+const axios = require("axios").default;
 
-const { getLogger } = require('../loaders/logger');
-const logger = getLogger('worker.extractors');
+const { logger } = require("../loader");
 
 module.exports = async function (job) {
   try {
@@ -18,15 +17,22 @@ module.exports = async function (job) {
     const { data } = await axios.get(url);
     const dom = new JSDOM(data, {
       url,
-      resources: 'usable',
+      resources: "usable",
     });
 
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
 
     const { content, textContent } = article;
-    if (content === null || content === undefined || textContent === null || textContent === undefined) {
-      throw new Error(`The given URL '${url}' has an empty content. Please check whether it is valid or not.`);
+    if (
+      content === null ||
+      content === undefined ||
+      textContent === null ||
+      textContent === undefined
+    ) {
+      throw new Error(
+        `The given URL '${url}' has an empty content. Please check whether it is valid or not.`
+      );
     }
 
     const result = Object.assign(Object.create(null), article, { url });

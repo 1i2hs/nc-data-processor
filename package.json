@@ -4,22 +4,21 @@
   "description": "a service that extracts main content from the web page, analyzes the content to discover additional metadata, and passes the final data to the indexing engine",
   "main": "app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "start:dev": "pm2 start ecosystem.config.js",
-    "start:prod": "pm2 start ecosystem.prod.config.js --env production",
+    "start": "nodemon bin/www",
     "test": "jest",
     "lint": "eslint src --fix",
     "format": "prettier --write src"
   },
   "keywords": [
     "express",
-    "readabilityjs"
+    "readabilityjs",
+    "bullmq"
   ],
   "author": "Inho Han",
   "license": "MIT",
   "dependencies": {
     "@mozilla/readability": "^0.3.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "bullmq": "^1.10.0",
     "cors": "^2.8.5",
@@ -37,7 +36,10 @@
     "eslint": "^7.8.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.7",
     "jest": "^26.4.2",
+    "lint-staged": "^10.5.3",
+    "nodemon": "^2.0.7",
     "prettier": "^2.1.1"
   },
   "engines": {
@@ -60,19 +62,22 @@
       "jest": true
     }
   },
-  "prettier": {
-    "semi": true,
-    "trailingComma": "all",
-    "singleQuote": true,
-    "printWidth": 120,
-    "tabWidth": 2
-  },
   "jest": {
     "verbose": true,
     "collectCoverage": true,
     "testPathIgnorePatterns": [
       "/node_modules",
       "src/lib"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
     ]
   }
 }
